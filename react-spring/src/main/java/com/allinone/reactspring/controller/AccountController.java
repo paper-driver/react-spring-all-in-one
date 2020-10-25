@@ -1,6 +1,7 @@
 package com.allinone.reactspring.controller;
 
 import com.allinone.reactspring.model.Account;
+import com.allinone.reactspring.payload.RequestMessage;
 import com.allinone.reactspring.payload.ResponseMessage;
 import com.allinone.reactspring.service.AccountService;
 import org.slf4j.Logger;
@@ -21,21 +22,39 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
-    public ResponseEntity<ResponseMessage<Account>> getById(@RequestParam(value = "id") Long id){
+    @RequestMapping(value = "/get", params = "id", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> getById(@RequestParam Long id){
         ResponseMessage<Account> response = accountService.getById(id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
-    public ResponseEntity<ResponseMessage<Account>> getByEmail(@RequestParam(value = "email") String email){
+    @RequestMapping(value = "/get/{}", params = "email", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> getByEmail(@RequestParam String email){
         ResponseMessage<Account> response = accountService.getByEmail(email);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
-    public ResponseEntity<ResponseMessage<Account>> updateIncome(@Valid @RequestBody ){
-        ResponseMessage<Account> response = accountService.updateIncome(income)
+    @RequestMapping(value = "/update/income", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> updateIncome(@Valid @RequestBody RequestMessage<Long> body){
+        ResponseMessage<Account> response = accountService.updateIncome(body.getEmail(), body.getRequest());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @RequestMapping(value = "/update/debt", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> updateDebt(@Valid @RequestBody RequestMessage<Long> body){
+        ResponseMessage<Account> response = accountService.updateDebt(body.getEmail(), body.getRequest());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @RequestMapping(value = "/update/saving", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> updateSaving(@Valid @RequestBody RequestMessage<Long> body){
+        ResponseMessage<Account> response = accountService.updateSaving(body.getEmail(), body.getRequest());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @RequestMapping(value = "/update/net-saving", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> updateNetSaving(@Valid @RequestBody RequestMessage body){
+        ResponseMessage<Account> response = accountService.updateNetSaving(body.getEmail());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
