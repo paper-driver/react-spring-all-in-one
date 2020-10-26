@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
@@ -21,6 +22,12 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
+
+    @RequestMapping(value = "/get-all", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<List<Account>>> getAll(){
+        ResponseMessage<List<Account>> response = accountService.getAll();
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 
     @RequestMapping(value = "/get", params = "id", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
     public ResponseEntity<ResponseMessage<Account>> getById(@RequestParam Long id){

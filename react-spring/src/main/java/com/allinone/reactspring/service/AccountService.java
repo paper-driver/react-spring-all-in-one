@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountService {
 
@@ -108,6 +110,16 @@ public class AccountService {
             }
         }else{
             return new ResponseMessage<Account>("The account does not exist", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseMessage<List<Account>> getAll(){
+        try{
+            List<Account> accounts = accountRepository.findAll();
+            return new ResponseMessage<List<Account>>("Succeeded to find the account", HttpStatus.ACCEPTED, accounts);
+        }catch(Exception e){
+            logger.error("get account by id error: " + e.getMessage());
+            return new ResponseMessage<List<Account>>("Failed to find the account", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
