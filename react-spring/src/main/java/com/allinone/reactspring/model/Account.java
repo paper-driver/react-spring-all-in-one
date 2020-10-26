@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -31,6 +31,4 @@ public class Account {
 
     @Column
     private Long net_saving = 0L;
-
-
 }

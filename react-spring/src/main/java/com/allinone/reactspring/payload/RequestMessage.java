@@ -10,11 +10,11 @@ public class RequestMessage<T> {
     T request;
 
     RequestMessage(String email){
-        email = email;
+        this.email = email;
     }
 
     RequestMessage(String email, T request){
-        email = email;
-        request= request;
+        this.email = email;
+        this.request= request;
     }
 }

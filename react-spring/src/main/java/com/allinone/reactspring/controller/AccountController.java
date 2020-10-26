@@ -28,7 +28,7 @@ public class AccountController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @RequestMapping(value = "/get/{}", params = "email", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    @RequestMapping(value = "/get", params = "email", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
     public ResponseEntity<ResponseMessage<Account>> getByEmail(@RequestParam String email){
         ResponseMessage<Account> response = accountService.getByEmail(email);
         return ResponseEntity.status(response.getStatus()).body(response);
@@ -55,6 +55,12 @@ public class AccountController {
     @RequestMapping(value = "/update/net-saving", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
     public ResponseEntity<ResponseMessage<Account>> updateNetSaving(@Valid @RequestBody RequestMessage body){
         ResponseMessage<Account> response = accountService.updateNetSaving(body.getEmail());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<ResponseMessage<Account>> createAccount(@Valid @RequestBody RequestMessage<Account> body){
+        ResponseMessage<Account> response = accountService.createAccount(body.getRequest());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

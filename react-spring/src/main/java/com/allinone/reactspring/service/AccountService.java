@@ -110,4 +110,25 @@ public class AccountService {
             return new ResponseMessage<Account>("The account does not exist", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseMessage<Account> createAccount(Account new_account){
+        if(accountRepository.existsByEmail(new_account.getEmail())){
+            return new ResponseMessage<Account>("The account exists in the system", HttpStatus.BAD_REQUEST);
+        }else{
+            try{
+                Account account = new Account();
+                account.setEmail(new_account.getEmail());
+                account.setName(new_account.getName());
+                account.setIncome(new_account.getIncome());
+                account.setDebt(new_account.getDebt());
+                account.setSaving(new_account.getSaving());
+                account.setNet_saving(new_account.getSaving() - new_account.getDebt());
+                accountRepository.saveAndFlush(account);
+                return new ResponseMessage<Account>("Succeeded to create a new account", HttpStatus.CREATED);
+            }catch(Exception e){
+                logger.error("create a new account: " + e.getMessage());
+                return new ResponseMessage<Account>("Failed to add a new account", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
 }
